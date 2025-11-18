@@ -1209,6 +1209,14 @@
         </div>
       `;
 
+      // 👉 Set gambar thumbnail jika ada
+      const thumb = card.querySelector('.article-thumb');
+      if (thumb && a.image) {
+        thumb.style.backgroundImage = `url('${a.image}')`;
+        thumb.style.backgroundSize = 'cover';
+        thumb.style.backgroundPosition = 'center';
+      }
+
       listEl.appendChild(card);
     });
   }
@@ -1226,6 +1234,7 @@
   // Pencarian
   const searchInputEl = document.getElementById('searchInput');
   if (searchInputEl) {
+    searchQuery = '';
     searchInputEl.addEventListener('input', () => {
       searchQuery = searchInputEl.value.toLowerCase();
       applyFilters();
@@ -1271,4 +1280,5 @@
 </script>
 </body>
 </html>
+
 
