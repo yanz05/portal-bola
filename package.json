@@ -1,0 +1,9 @@
+{
+  "name": "portal-bola-scripts",
+  "version": "1.0.0",
+  "description": "Script update berita otomatis untuk Portal Bola",
+  "type": "module",
+  "dependencies": {
+    "rss-parser": "^3.12.0"
+  }
+}
