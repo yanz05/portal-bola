@@ -396,7 +396,6 @@
       justify-content: space-between;
       font-size: 11px;
       color: #e5e7eb;
-      margin-top: 6px;
     }
 
     .hero-mini-meta span {
@@ -900,16 +899,16 @@
             peran pemain kunci, dan apa artinya hasil ini untuk peluang lolos ke fase gugur.
           </p>
           <div class="hero-cta-row">
-  <button class="pill-btn" id="heroReadBtn">
-    <span class="icon">▶</span>
-    <span>Baca Analisis Lengkap</span>
-  </button>
-  <button class="ghost-btn" id="heroStatsBtn">
-    <span>📊</span>
-    <span>Lihat statistik pertandingan</span>
-  </button>
-  <span class="stat-pill">🔥 12.4K dibaca hari ini</span>
-</div>
+            <button class="pill-btn" id="heroReadBtn">
+              <span class="icon">▶</span>
+              <span>Baca Analisis Lengkap</span>
+            </button>
+            <button class="ghost-btn" id="heroStatsBtn">
+              <span>📊</span>
+              <span>Lihat statistik pertandingan</span>
+            </button>
+            <span class="stat-pill">🔥 12.4K dibaca hari ini</span>
+          </div>
         </div>
         <div class="hero-media">
           <div class="field-overlay"></div>
@@ -946,9 +945,7 @@
 
       <!-- Sidebar quick block -->
       <aside class="sidebar-block">
-        <h2 class="sidebar-title">
-          ⏱️ Jadwal Malam Ini
-        </h2>
+        <h2 class="sidebar-title">⏱️ Jadwal Malam Ini</h2>
         <p class="sidebar-sub">
           Ikuti pertandingan pilihan redaksi, lengkap dengan jam tayang dan channel resmi.
         </p>
@@ -991,23 +988,23 @@
     <main class="main-layout">
       <!-- BERITA -->
       <section class="section" id="berita">
-  <div class="section-header">
-    <div>
-      <h2 class="section-title">Berita Terbaru</h2>
-      <p class="section-sub">Update cepat dari liga top Eropa dan dunia.</p>
-    </div>
-    <div class="filter-pills">
-      <button class="filter-pill active" data-category="semua">Semua</button>
-      <button class="filter-pill" data-category="Liga Inggris">Liga Inggris</button>
-      <button class="filter-pill" data-category="Liga Spanyol">La Liga</button>
-      <button class="filter-pill" data-category="Liga Champions">Liga Champions</button>
-    </div>
-  </div>
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Berita Terbaru</h2>
+            <p class="section-sub">Update cepat dari liga top Eropa dan dunia.</p>
+          </div>
+          <div class="filter-pills">
+            <button class="filter-pill active" data-category="semua">Semua</button>
+            <button class="filter-pill" data-category="Liga Inggris">Liga Inggris</button>
+            <button class="filter-pill" data-category="Liga Spanyol">La Liga</button>
+            <button class="filter-pill" data-category="Liga Champions">Liga Champions</button>
+          </div>
+        </div>
 
-  <div class="article-list" id="articleList">
-    <!-- Artikel akan di-generate otomatis dari berita.json -->
-  </div>
-</section>
+        <div class="article-list" id="articleList">
+          <!-- Artikel akan di-generate otomatis dari berita.json -->
+        </div>
+      </section>
 
       <!-- SIDEBAR -->
       <aside>
@@ -1117,221 +1114,213 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-  <span>© <span id="yearNow"></span> Portal Bola. Dibangun dengan cinta untuk pecinta sepak bola.</span>
-  <div class="footer-links">
-    <a href="mailto:email@example.com">Kontak</a>
-    <a href="#top">Tentang Kami</a>
-    <a href="#top">Kebijakan Privasi</a>
-  </div>
-</footer>
+      <span>© <span id="yearNow"></span> Portal Bola. Dibangun dengan cinta untuk pecinta sepak bola.</span>
+      <div class="footer-links">
+        <a href="mailto:email@example.com">Kontak</a>
+        <a href="#top">Tentang Kami</a>
+        <a href="#top">Kebijakan Privasi</a>
+      </div>
+    </footer>
   </div>
 
   <script>
-  // Set tahun sekarang di footer
-  const yearSpan = document.getElementById('yearNow');
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
-
-  // State untuk berita
-  let allArticles = [];
-  let currentCategory = 'semua';
-  let searchQuery = '';
-
-  // Fungsi pilih warna "gambar" otomatis berdasarkan kategori
-  function getThumbGradient(category) {
-    switch (category) {
-      case 'Liga Inggris':
-        return 'linear-gradient(135deg, #0ea5e9, #6366f1)';
-      case 'Liga Spanyol':
-        return 'linear-gradient(135deg, #22c55e, #facc15)';
-      case 'Liga Champions':
-        return 'linear-gradient(135deg, #22c55e, #0ea5e9)';
-      default:
-        return 'linear-gradient(135deg, #ec4899, #8b5cf6)';
-    }
-  }
-
-  // Load berita dari berita.json
-  async function loadArticles() {
-    try {
-      const res = await fetch('berita.json?cache=' + Date.now());
-      if (!res.ok) throw new Error('Gagal mengambil data berita');
-      allArticles = await res.json();
-    } catch (err) {
-      console.error(err);
-      allArticles = [];
-    }
-    applyFilters();
-  }
-
-  // Terapkan filter kategori + pencarian
-  function applyFilters() {
-    const listEl = document.getElementById('articleList');
-    if (!listEl) return;
-
-    listEl.innerHTML = '';
-
-    if (!allArticles.length) {
-      listEl.innerHTML =
-        '<p style="font-size:13px;color:#9ca3af;">Belum ada berita. Tambahkan data di <strong>berita.json</strong>.</p>';
-      return;
+    // Set tahun sekarang di footer
+    const yearSpan = document.getElementById('yearNow');
+    if (yearSpan) {
+      yearSpan.textContent = new Date().getFullYear();
     }
 
-    const filtered = allArticles.filter(a => {
-      const matchesCategory =
-        currentCategory === 'semua' || a.category === currentCategory;
-      const text = ((a.title || '') + ' ' + (a.excerpt || '')).toLowerCase();
-      const matchesSearch =
-        !searchQuery || text.includes(searchQuery);
-      return matchesCategory && matchesSearch;
-    });
+    // State untuk berita
+    let allArticles = [];
+    let currentCategory = 'semua';
+    let searchQuery = '';
 
-    if (!filtered.length) {
-      listEl.innerHTML =
-        '<p style="font-size:13px;color:#9ca3af;">Berita tidak ditemukan untuk filter / pencarian ini.</p>';
-      return;
+    // Fungsi pilih warna "gambar" otomatis berdasarkan kategori
+    function getThumbGradient(category) {
+      switch (category) {
+        case 'Liga Inggris':
+          return 'linear-gradient(135deg, #0ea5e9, #6366f1)';
+        case 'Liga Spanyol':
+          return 'linear-gradient(135deg, #22c55e, #facc15)';
+        case 'Liga Champions':
+          return 'linear-gradient(135deg, #22c55e, #0ea5e9)';
+        default:
+          return 'linear-gradient(135deg, #ec4899, #8b5cf6)';
+      }
     }
 
-    filtered.forEach(a => {
-      const card = document.createElement('article');
-      card.className = 'article-card';
-      card.setAttribute('data-category', a.category || '');
-      card.setAttribute('data-title', a.title || '');
+    // Load berita dari berita.json
+    async function loadArticles() {
+      try {
+        const res = await fetch('berita.json?cache=' + Date.now());
+        if (!res.ok) throw new Error('Gagal mengambil data berita');
+        allArticles = await res.json();
+      } catch (err) {
+        console.error(err);
+        allArticles = [];
+      }
+      applyFilters();
+    }
 
-      const detailUrl = 'artikel.html?id=' + encodeURIComponent(a.id);
+    // Terapkan filter kategori + pencarian
+    function applyFilters() {
+      const listEl = document.getElementById('articleList');
+      if (!listEl) return;
 
-      card.innerHTML = `
-        <div class="article-thumb">
-          <div class="article-thumb-inner"></div>
-          <span class="article-tag">${a.category || ''}</span>
-          <span class="article-duration">${a.readingTime || ''}</span>
-        </div>
-        <div class="article-content">
-          <h3 class="article-title">${a.title || ''}</h3>
-          <p class="article-excerpt">
-            ${a.excerpt || ''}
-          </p>
-          <div class="article-meta-row">
-            <div class="article-meta-left">
-              <span>📅 ${a.date || ''}</span>
-              <span>👁️ ${a.views || ''}</span>
-              <span class="chip">${a.tag || ''}</span>
-            </div>
-            <a class="read-link" href="${detailUrl}">Baca selengkapnya →</a>
+      listEl.innerHTML = '';
+
+      if (!allArticles.length) {
+        listEl.innerHTML =
+          '<p style="font-size:13px;color:#9ca3af;">Belum ada berita. Tambahkan data di <strong>berita.json</strong>.</p>';
+        return;
+      }
+
+      const filtered = allArticles.filter(a => {
+        const matchesCategory =
+          currentCategory === 'semua' || a.category === currentCategory;
+        const text = ((a.title || '') + ' ' + (a.excerpt || '')).toLowerCase();
+        const matchesSearch =
+          !searchQuery || text.includes(searchQuery);
+        return matchesCategory && matchesSearch;
+      });
+
+      if (!filtered.length) {
+        listEl.innerHTML =
+          '<p style="font-size:13px;color:#9ca3af;">Berita tidak ditemukan untuk filter / pencarian ini.</p>';
+        return;
+      }
+
+      filtered.forEach(a => {
+        const card = document.createElement('article');
+        card.className = 'article-card';
+        card.setAttribute('data-category', a.category || '');
+        card.setAttribute('data-title', a.title || '');
+
+        const detailUrl = 'artikel.html?id=' + encodeURIComponent(a.id);
+
+        card.innerHTML = `
+          <div class="article-thumb">
+            <div class="article-thumb-inner"></div>
+            <span class="article-tag">${a.category || ''}</span>
+            <span class="article-duration">${a.readingTime || ''}</span>
           </div>
-        </div>
-      `;
+          <div class="article-content">
+            <h3 class="article-title">${a.title || ''}</h3>
+            <p class="article-excerpt">
+              ${a.excerpt || ''}
+            </p>
+            <div class="article-meta-row">
+              <div class="article-meta-left">
+                <span>📅 ${a.date || ''}</span>
+                <span>👁️ ${a.views || ''}</span>
+                <span class="chip">${a.tag || ''}</span>
+              </div>
+              <a class="read-link" href="${detailUrl}">Baca selengkapnya →</a>
+            </div>
+          </div>
+        `;
 
-      // 👉 Set "gambar" otomatis berdasarkan kategori
-      const thumb = card.querySelector('.article-thumb');
-      const grad = getThumbGradient(a.category || '');
-      if (thumb) {
-        thumb.style.background = grad;
-      }
+        // Set "gambar" otomatis berdasarkan kategori
+        const thumb = card.querySelector('.article-thumb');
+        const grad = getThumbGradient(a.category || '');
+        if (thumb) {
+          thumb.style.background = grad;
+        }
 
-      listEl.appendChild(card);
-    });
-  }
-
-  // Tombol filter kategori
-  document.querySelectorAll('.filter-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentCategory = btn.getAttribute('data-category') || 'semua';
-      applyFilters();
-    });
-  });
-
-  // Pencarian
-  const searchInputEl = document.getElementById('searchInput');
-  if (searchInputEl) {
-    searchInputEl.addEventListener('input', () => {
-      searchQuery = searchInputEl.value.toLowerCase();
-      applyFilters();
-    });
-  }
-
-  // Tombol subscribe di navbar
-  const subscribeBtn = document.getElementById('subscribeBtn');
-  if (subscribeBtn) {
-    subscribeBtn.addEventListener('click', () => {
-      alert('Terima kasih! Kamu akan mendapatkan update artikel terbaru Portal Bola.');
-    });
-  }
-
-  // Newsletter form
-  function handleSubscribe(e) {
-    e.preventDefault();
-    const emailInput = document.getElementById('emailInput');
-    const email = (emailInput?.value || '').trim();
-    if (!email) {
-      alert('Mohon isi alamat email terlebih dahulu.');
-      return;
+        listEl.appendChild(card);
+      });
     }
-    alert('Terima kasih sudah berlangganan, ' + email + '!');
-    emailInput.value = '';
-  }
 
-  // Smooth scroll untuk menu navbar (link yang pakai #)
-  document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const targetId = link.getAttribute('href');
-      if (!targetId || targetId === '#') return;
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-  // Hero buttons: scroll ke bagian tertentu
-  const heroReadBtn = document.getElementById('heroReadBtn');
-  if (heroReadBtn) {
-    heroReadBtn.addEventListener('click', () => {
-      const beritaSection = document.getElementById('berita');
-      if (beritaSection) {
-        beritaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  }
-
-  const heroStatsBtn = document.getElementById('heroStatsBtn');
-  if (heroStatsBtn) {
-    heroStatsBtn.addEventListener('click', () => {
-      const klasemenSection = document.getElementById('klasemen');
-      if (klasemenSection) {
-        klasemenSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  }
-
-  // Tag cloud: klik = cari / filter
-  document.querySelectorAll('.tag-cloud .tag').forEach(tagEl => {
-    tagEl.addEventListener('click', () => {
-      const text = tagEl.textContent || '';
-      const cleaned = text.replace('#', '').trim();
-      const searchInputEl = document.getElementById('searchInput');
-      if (searchInputEl) {
-        searchInputEl.value = cleaned;
-        searchQuery = cleaned.toLowerCase();
+    // Tombol filter kategori
+    document.querySelectorAll('.filter-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-category') || 'semua';
         applyFilters();
-      }
+      });
     });
-  });
-  // Jalankan saat halaman dibuka
-  loadArticles();
-</script>
+
+    // Pencarian
+    const searchInputEl = document.getElementById('searchInput');
+    if (searchInputEl) {
+      searchInputEl.addEventListener('input', () => {
+        searchQuery = searchInputEl.value.toLowerCase();
+        applyFilters();
+      });
+    }
+
+    // Tombol subscribe di navbar
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    if (subscribeBtn) {
+      subscribeBtn.addEventListener('click', () => {
+        alert('Terima kasih! Kamu akan mendapatkan update artikel terbaru Portal Bola.');
+      });
+    }
+
+    // Newsletter form
+    function handleSubscribe(e) {
+      e.preventDefault();
+      const emailInput = document.getElementById('emailInput');
+      const email = (emailInput?.value || '').trim();
+      if (!email) {
+        alert('Mohon isi alamat email terlebih dahulu.');
+        return;
+      }
+      alert('Terima kasih sudah berlangganan, ' + email + '!');
+      emailInput.value = '';
+    }
+
+    // Smooth scroll untuk menu navbar (link yang pakai #)
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const targetId = link.getAttribute('href');
+        if (!targetId || targetId === '#') return;
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Hero buttons: scroll ke bagian tertentu
+    const heroReadBtn = document.getElementById('heroReadBtn');
+    if (heroReadBtn) {
+      heroReadBtn.addEventListener('click', () => {
+        const beritaSection = document.getElementById('berita');
+        if (beritaSection) {
+          beritaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    const heroStatsBtn = document.getElementById('heroStatsBtn');
+    if (heroStatsBtn) {
+      heroStatsBtn.addEventListener('click', () => {
+        const klasemenSection = document.getElementById('klasemen');
+        if (klasemenSection) {
+          klasemenSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    // Tag cloud: klik = isi search & filter
+    document.querySelectorAll('.tag-cloud .tag').forEach(tagEl => {
+      tagEl.addEventListener('click', () => {
+        const text = tagEl.textContent || '';
+        const cleaned = text.replace('#', '').trim();
+        const searchInputEl2 = document.getElementById('searchInput');
+        if (searchInputEl2) {
+          searchInputEl2.value = cleaned;
+          searchQuery = cleaned.toLowerCase();
+          applyFilters();
+        }
+      });
+    });
+
+    // Jalankan saat halaman dibuka
+    loadArticles();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
