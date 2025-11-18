@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Portal Bola - Berita & Artikel Sepak Bola</title>
+  <title>Portal Bola - Berita & Analisis Sepak Bola</title>
   <style>
     :root {
       --bg: #0b1120;
@@ -23,6 +23,10 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -269,6 +273,7 @@
       align-items: center;
       gap: 10px;
       margin-top: 6px;
+      flex-wrap: wrap;
     }
 
     .ghost-btn {
@@ -422,7 +427,7 @@
       margin-bottom: 30px;
     }
 
-    /* ARTICLE LIST */
+    /* SECTION */
     .section {
       background: radial-gradient(circle at top left, #020617, #020617 70%);
       border-radius: 22px;
@@ -447,7 +452,8 @@
       gap: 6px;
     }
 
-    .section-subtitle {
+    .section-subtitle,
+    .section-sub {
       font-size: 12px;
       color: var(--muted);
     }
@@ -477,6 +483,7 @@
       background: rgba(22,163,74,0.18);
     }
 
+    /* ARTICLE LIST */
     .article-list {
       display: flex;
       flex-direction: column;
@@ -838,7 +845,7 @@
     }
   </style>
 </head>
-<body>
+<body id="top">
   <div class="wrapper">
     <!-- NAVBAR -->
     <header class="navbar">
@@ -850,7 +857,7 @@
         </div>
       </div>
       <nav class="nav-links">
-        <a href="#" class="active">Beranda</a>
+        <a href="#top" class="active">Beranda</a>
         <a href="#berita">Berita</a>
         <a href="#analisis">Analisis</a>
         <a href="#opini">Opini</a>
@@ -878,7 +885,7 @@
               BREAKING
             </span>
             <span class="badge-tag">Liga Champions</span>
-            <span class="badge-tag">Tak Tik & Analisis</span>
+            <span class="badge-tag">Taktik & Analisis</span>
           </div>
           <h1 class="hero-title">
             Comeback dramatis menit akhir, sang juara bertahan selamat dari kekalahan.
@@ -982,6 +989,7 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-layout">
+      <!-- BERITA -->
       <section class="section" id="berita">
         <div class="section-header">
           <div>
@@ -997,109 +1005,7 @@
         </div>
 
         <div class="article-list" id="articleList">
-          <!-- Artikel 1 -->
-          <article class="article-card" data-category="Liga Champions" data-title="Comeback dramatis sang juara bertahan">
-            <div class="article-thumb">
-              <div class="article-thumb-inner"></div>
-              <span class="article-tag">Liga Champions</span>
-              <span class="article-duration">5 menit baca</span>
-            </div>
-            <div class="article-content">
-              <h3 class="article-title">
-                Comeback dramatis, juara bertahan selamat dari kekalahan di kandang.
-              </h3>
-              <p class="article-excerpt">
-                Tertinggal dua gol di babak pertama, perubahan formasi 4-3-3 ke 4-2-3-1
-                mengubah segalanya. Pergantian pemain di menit 60 jadi titik balik.
-              </p>
-              <div class="article-meta-row">
-                <div class="article-meta-left">
-                  <span>📅 18 Nov 2025</span>
-                  <span>👁️ 8.2K</span>
-                  <span class="chip">Analisis</span>
-                </div>
-                <span class="read-link">Baca selengkapnya →</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Artikel 2 -->
-          <article class="article-card" data-category="Liga Inggris" data-title="Drama VAR di laga big match Liga Inggris">
-            <div class="article-thumb" style="background: linear-gradient(135deg, #0ea5e9, #6366f1);">
-              <div class="article-thumb-inner"></div>
-              <span class="article-tag">Liga Inggris</span>
-              <span class="article-duration">4 menit baca</span>
-            </div>
-            <div class="article-content">
-              <h3 class="article-title">
-                Drama VAR di big match: tiga gol dianulir, apa kata pelatih?
-              </h3>
-              <p class="article-excerpt">
-                Laga sarat gengsi diwarnai keputusan VAR yang kontroversial. Kami merangkum
-                momen-momen krusial dan aturan yang digunakan wasit.
-              </p>
-              <div class="article-meta-row">
-                <div class="article-meta-left">
-                  <span>📅 18 Nov 2025</span>
-                  <span>👁️ 5.4K</span>
-                  <span class="chip">Berita</span>
-                </div>
-                <span class="read-link">Baca selengkapnya →</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Artikel 3 -->
-          <article class="article-card" data-category="Liga Spanyol" data-title="Wonderkid baru bersinar di Liga Spanyol">
-            <div class="article-thumb" style="background: linear-gradient(135deg, #22c55e, #facc15);">
-              <div class="article-thumb-inner"></div>
-              <span class="article-tag">Liga Spanyol</span>
-              <span class="article-duration">6 menit baca</span>
-            </div>
-            <div class="article-content">
-              <h3 class="article-title">
-                Wonderkid 18 tahun curi perhatian, cetak brace di El Clasico mini.
-              </h3>
-              <p class="article-excerpt">
-                Kecepatan, keberanian, dan ketenangan di depan gawang membuatnya jadi sorotan.
-                Apa yang membuatnya spesial di mata para pemandu bakat?
-              </p>
-              <div class="article-meta-row">
-                <div class="article-meta-left">
-                  <span>📅 17 Nov 2025</span>
-                  <span>👁️ 6.1K</span>
-                  <span class="chip">Profil Pemain</span>
-                </div>
-                <span class="read-link">Baca selengkapnya →</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Artikel 4 -->
-          <article class="article-card" data-category="Liga Inggris" data-title="Analisis taktik pressing tinggi di Premier League">
-            <div class="article-thumb" style="background: linear-gradient(135deg, #22c55e, #ec4899);">
-              <div class="article-thumb-inner"></div>
-              <span class="article-tag">Liga Inggris</span>
-              <span class="article-duration">7 menit baca</span>
-            </div>
-            <div class="article-content">
-              <h3 class="article-title">
-                Mengapa tim-tim Premier League semakin agresif dengan pressing tinggi?
-              </h3>
-              <p class="article-excerpt">
-                Data menunjukkan intensitas lari tanpa bola meningkat signifikan. Kami jelaskan
-                konsep PPDA, counter-press, dan resikonya jika salah eksekusi.
-              </p>
-              <div class="article-meta-row">
-                <div class="article-meta-left">
-                  <span>📅 16 Nov 2025</span>
-                  <span>👁️ 4.7K</span>
-                  <span class="chip">Taktik</span>
-                </div>
-                <span class="read-link">Baca selengkapnya →</span>
-              </div>
-            </div>
-          </article>
+          <!-- Artikel akan di-generate otomatis dari berita.json -->
         </div>
       </section>
 
@@ -1155,6 +1061,60 @@
       </aside>
     </main>
 
+    <!-- KLASMEN -->
+    <section class="section" id="klasemen" style="margin-bottom: 24px;">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Klasemen Liga (Contoh)</h2>
+          <p class="section-sub">Kamu bisa isi manual atau nanti dihubungkan ke API.</p>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(55,65,81,0.9);color:#9ca3af;">
+              <th style="text-align:left;padding:6px 4px;">#</th>
+              <th style="text-align:left;padding:6px 4px;">Tim</th>
+              <th style="text-align:right;padding:6px 4px;">Ma</th>
+              <th style="text-align:right;padding:6px 4px;">M</th>
+              <th style="text-align:right;padding:6px 4px;">S</th>
+              <th style="text-align:right;padding:6px 4px;">K</th>
+              <th style="text-align:right;padding:6px 4px;">Poin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(31,41,55,0.9);">
+              <td style="padding:6px 4px;">1</td>
+              <td style="padding:6px 4px;">Arsenal</td>
+              <td style="padding:6px 4px;text-align:right;">12</td>
+              <td style="padding:6px 4px;text-align:right;">9</td>
+              <td style="padding:6px 4px;text-align:right;">2</td>
+              <td style="padding:6px 4px;text-align:right;">1</td>
+              <td style="padding:6px 4px;text-align:right;">29</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(31,41,55,0.9);">
+              <td style="padding:6px 4px;">2</td>
+              <td style="padding:6px 4px;">Liverpool</td>
+              <td style="padding:6px 4px;text-align:right;">12</td>
+              <td style="padding:6px 4px;text-align:right;">9</td>
+              <td style="padding:6px 4px;text-align:right;">1</td>
+              <td style="padding:6px 4px;text-align:right;">2</td>
+              <td style="padding:6px 4px;text-align:right;">28</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 4px;">3</td>
+              <td style="padding:6px 4px;">Manchester City</td>
+              <td style="padding:6px 4px;text-align:right;">12</td>
+              <td style="padding:6px 4px;text-align:right;">8</td>
+              <td style="padding:6px 4px;text-align:right;">2</td>
+              <td style="padding:6px 4px;text-align:right;">2</td>
+              <td style="padding:6px 4px;text-align:right;">26</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- FOOTER -->
     <footer class="footer">
       <span>© <span id="yearNow"></span> Portal Bola. Dibangun dengan cinta untuk pecinta sepak bola.</span>
@@ -1167,66 +1127,148 @@
   </div>
 
   <script>
-    // Set tahun sekarang
-    document.getElementById('yearNow').textContent = new Date().getFullYear();
+    // Set tahun sekarang di footer
+    const yearSpan = document.getElementById('yearNow');
+    if (yearSpan) {
+      yearSpan.textContent = new Date().getFullYear();
+    }
 
-    // Fitur: filter kategori
-    const filterButtons = document.querySelectorAll('.filter-pill');
-    const articleCards = document.querySelectorAll('.article-card');
+    // State untuk berita
+    let allArticles = [];
+    let currentCategory = 'semua';
+    let searchQuery = '';
 
-    filterButtons.forEach(btn => {
+    // Load berita dari berita.json
+    async function loadArticles() {
+      try {
+        const res = await fetch('berita.json?cache=' + Date.now());
+        if (!res.ok) throw new Error('Gagal mengambil data berita');
+        allArticles = await res.json();
+      } catch (err) {
+        console.error(err);
+        allArticles = [];
+      }
+      applyFilters();
+    }
+
+    // Terapkan filter kategori + pencarian
+    function applyFilters() {
+      const listEl = document.getElementById('articleList');
+      if (!listEl) return;
+
+      listEl.innerHTML = '';
+
+      if (!allArticles.length) {
+        listEl.innerHTML =
+          '<p style="font-size:13px;color:#9ca3af;">Belum ada berita. Tambahkan data di <strong>berita.json</strong>.</p>';
+        return;
+      }
+
+      const filtered = allArticles.filter(a => {
+        const matchesCategory =
+          currentCategory === 'semua' || a.category === currentCategory;
+        const text = ((a.title || '') + ' ' + (a.excerpt || '')).toLowerCase();
+        const matchesSearch =
+          !searchQuery || text.includes(searchQuery);
+        return matchesCategory && matchesSearch;
+      });
+
+      if (!filtered.length) {
+        listEl.innerHTML =
+          '<p style="font-size:13px;color:#9ca3af;">Berita tidak ditemukan untuk filter / pencarian ini.</p>';
+        return;
+      }
+
+      filtered.forEach(a => {
+        const card = document.createElement('article');
+        card.className = 'article-card';
+        card.setAttribute('data-category', a.category || '');
+        card.setAttribute('data-title', a.title || '');
+
+        card.innerHTML = `
+          <div class="article-thumb">
+            <div class="article-thumb-inner"></div>
+            <span class="article-tag">${a.category || ''}</span>
+            <span class="article-duration">${a.readingTime || ''}</span>
+          </div>
+          <div class="article-content">
+            <h3 class="article-title">${a.title || ''}</h3>
+            <p class="article-excerpt">
+              ${a.excerpt || ''}
+            </p>
+            <div class="article-meta-row">
+              <div class="article-meta-left">
+                <span>📅 ${a.date || ''}</span>
+                <span>👁️ ${a.views || ''}</span>
+                <span class="chip">${a.tag || ''}</span>
+              </div>
+              ${a.url
+                ? `<a class="read-link" href="${a.url}" target="_blank" rel="noopener">Baca selengkapnya →</a>`
+                : `<span class="read-link">Baca selengkapnya →</span>`
+              }
+            </div>
+          </div>
+        `;
+
+        listEl.appendChild(card);
+      });
+    }
+
+    // Tombol filter kategori
+    document.querySelectorAll('.filter-pill').forEach(btn => {
       btn.addEventListener('click', () => {
-        filterButtons.forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        const category = btn.getAttribute('data-category');
-
-        articleCards.forEach(card => {
-          const cardCategory = card.getAttribute('data-category');
-
-          if (category === 'semua' || category === cardCategory) {
-            card.style.display = 'grid';
-          } else {
-            card.style.display = 'none';
-          }
-        });
+        currentCategory = btn.getAttribute('data-category') || 'semua';
+        applyFilters();
       });
     });
 
-    // Fitur: search artikel
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.toLowerCase();
-
-      articleCards.forEach(card => {
-        const title = card.getAttribute('data-title').toLowerCase();
-        const excerpt = card.querySelector('.article-excerpt').textContent.toLowerCase();
-
-        if (title.includes(query) || excerpt.includes(query)) {
-          card.style.display = 'grid';
-        } else {
-          card.style.display = 'none';
-        }
+    // Pencarian
+    const searchInputEl = document.getElementById('searchInput');
+    if (searchInputEl) {
+      searchInputEl.addEventListener('input', () => {
+        searchQuery = searchInputEl.value.toLowerCase();
+        applyFilters();
       });
-    });
+    }
 
-    // Fitur: tombol subscribe
+    // Tombol subscribe di navbar
     const subscribeBtn = document.getElementById('subscribeBtn');
-    subscribeBtn.addEventListener('click', () => {
-      alert('Terima kasih! Kamu akan mendapatkan update artikel terbaru Portal Bola.');
-    });
+    if (subscribeBtn) {
+      subscribeBtn.addEventListener('click', () => {
+        alert('Terima kasih! Kamu akan mendapatkan update artikel terbaru Portal Bola.');
+      });
+    }
 
-    // Fitur: newsletter
+    // Newsletter form
     function handleSubscribe(e) {
       e.preventDefault();
-      const email = document.getElementById('emailInput').value.trim();
+      const emailInput = document.getElementById('emailInput');
+      const email = (emailInput?.value || '').trim();
       if (!email) {
         alert('Mohon isi alamat email terlebih dahulu.');
         return;
       }
       alert('Terima kasih sudah berlangganan, ' + email + '!');
-      document.getElementById('emailInput').value = '';
+      emailInput.value = '';
     }
+
+    // Smooth scroll untuk menu navbar (link yang pakai #)
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const targetId = link.getAttribute('href');
+        if (!targetId || targetId === '#') return;
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Jalankan saat halaman dibuka
+    loadArticles();
   </script>
 </body>
 </html>
