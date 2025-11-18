@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portal Bola - Berita & Artikel Sepak Bola</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --bg-soft: #020617;
+      --card: #020617;
+      --card-soft: #020617;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.15);
+      --accent-strong: #16a34a;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 40%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .wrapper {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(20px);
+      background: linear-gradient(to right, rgba(15,23,42,0.95), rgba(2,6,23,0.95));
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.3);
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #22c55e, #15803d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.7);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-text span:first-child {
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brand-text span:last-child {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 999px;
+      transition: 0.18s ease;
+      color: var(--muted);
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      background: rgba(15,23,42,0.9);
+      color: #f9fafb;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-input {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.8);
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(15,23,42,0.9);
+    }
+
+    .search-input input {
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 12px;
+      width: 100px;
+    }
+
+    .search-input input::placeholder {
+      color: var(--muted);
+    }
+
+    .pill-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(34,197,94,0.6);
+      font-size: 11px;
+      padding: 6px 10px;
+      background: linear-gradient(to right, #22c55e, #16a34a);
+      color: #022c22;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 18px rgba(34,197,94,0.55);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pill-btn span.icon {
+      font-size: 14px;
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+      gap: 18px;
+      margin-top: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-main {
+      background: radial-gradient(circle at top left, #1e293b, #020617);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(148,163,184,0.35);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 11px;
+    }
+
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.15);
+      color: #bbf7d0;
+      border: 1px solid rgba(34,197,94,0.70);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      font-size: 10px;
+    }
+
+    .dot-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34,197,94,0.9);
+      animation: pulse 1.2s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); opacity: 1; }
+      to { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    .badge-tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      color: var(--muted);
+    }
+
+    .hero-title {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .hero-desc {
+      font-size: 13px;
+      color: #d1d5db;
+      margin-bottom: 12px;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .ghost-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(156,163,175,0.6);
+      padding: 6px 10px;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: rgba(15,23,42,0.7);
+      color: #e5e7eb;
+    }
+
+    .stat-pill {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .hero-media {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #059669, #0f172a 55%, #020617 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px;
+      isolation: isolate;
+    }
+
+    .field-overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0.3;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(15,23,42,0.1) 0, transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(15,23,42,0.2) 0, transparent 50%);
+    }
+
+    .field-line {
+      border: 1px solid rgba(226,232,240,0.3);
+      border-radius: 16px;
+      position: relative;
+      height: 100%;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .field-center-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80px;
+      height: 80px;
+      border-radius: 999px;
+      border: 1px dashed rgba(226,232,240,0.4);
+      transform: translate(-50%, -50%);
+    }
+
+    .field-ball {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #f9fafb, #111827);
+      border: 1px solid rgba(15,23,42,0.8);
+      transform: translate(-50%, -50%) translateY(-16px);
+      box-shadow: 0 6px 14px rgba(15,23,42,0.8);
+    }
+
+    .score-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15,23,42,0.8);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      margin-bottom: 6px;
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+
+    .team-name {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .team-badge {
+      width: 16px;
+      height: 16px;
+      border-radius: 6px;
+      background: radial-gradient(circle at 30% 20%, #22c55e, #16a34a);
+    }
+
+    .score-main {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .score-tag {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.2);
+      color: #bbf7d0;
+      border: 1px solid rgba(34,197,94,0.5);
+    }
+
+    .hero-mini-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #e5e7eb;
+      margin-top: 6px;
+    }
+
+    .hero-mini-meta span {
+      opacity: 0.85;
+    }
+
+    .trend-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .trend-chip {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      border: 1px dashed rgba(148,163,184,0.7);
+      font-size: 11px;
+      color: #e5e7eb;
+    }
+
+    /* MAIN LAYOUT */
+    .main-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    /* ARTICLE LIST */
+    .section {
+      background: radial-gradient(circle at top left, #020617, #020617 70%);
+      border-radius: 22px;
+      border: 1px solid rgba(30,64,175,0.4);
+      padding: 16px 16px 18px;
+      box-shadow: 0 18px 40px rgba(15,23,42,0.9);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(75,85,99,0.9);
+      cursor: pointer;
+      background: rgba(17,24,39,0.9);
+      color: var(--muted);
+      transition: 0.18s ease;
+    }
+
+    .filter-pill.active,
+    .filter-pill:hover {
+      border-color: rgba(34,197,94,0.7);
+      color: #bbf7d0;
+      background: rgba(22,163,74,0.18);
+    }
+
+    .article-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .article-card {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 12px;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(31,41,55,0.9);
+      background: radial-gradient(circle at top left, #020617, #020617 60%);
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .article-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(56,189,248,0.25), transparent 55%);
+      opacity: 0;
+      transition: 0.22s ease;
+      pointer-events: none;
+    }
+
+    .article-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(15,23,42,0.8);
+      border-color: rgba(59,130,246,0.7);
+      background: radial-gradient(circle at top left, #020617, #020617 70%);
+    }
+
+    .article-card:hover::before {
+      opacity: 1;
+    }
+
+    .article-thumb {
+      border-radius: 14px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      position: relative;
+    }
+
+    .article-thumb-inner {
+      position: absolute;
+      inset: 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(15,23,42,0.65);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.25), rgba(15,23,42,0.7));
+    }
+
+    .article-tag {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      color: #e5e7eb;
+      font-size: 10px;
+      border: 1px solid rgba(148,163,184,0.6);
+    }
+
+    .article-duration {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 10px;
+      background: rgba(15,23,42,0.9);
+      color: var(--muted);
+    }
+
+    .article-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .article-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .article-excerpt {
+      font-size: 12px;
+      color: #d1d5db;
+    }
+
+    .article-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--muted);
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .article-meta-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: rgba(15,23,42,0.9);
+    }
+
+    .read-link {
+      font-size: 11px;
+      text-decoration: underline;
+      color: #93c5fd;
+      cursor: pointer;
+    }
+
+    /* SIDEBAR */
+    .sidebar-block {
+      border-radius: 20px;
+      background: radial-gradient(circle at top right, #020617, #020617 65%);
+      border: 1px solid rgba(55,65,81,0.9);
+      padding: 14px 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .live-match {
+      border-radius: 16px;
+      padding: 10px;
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      border: 1px solid rgba(55,65,81,0.9);
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .live-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .live-badge {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(220,38,38,0.25);
+      color: #fecaca;
+      border: 1px solid rgba(248,113,113,0.7);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .dot-live {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #f97316;
+      box-shadow: 0 0 10px rgba(248,113,113,0.9);
+      animation: pulse 1s infinite alternate;
+    }
+
+    .live-league {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .live-team-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .live-team {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-team-logo {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      background: radial-gradient(circle at 30% 20%, #3b82f6, #1d4ed8);
+    }
+
+    .live-team-name {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .live-score {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .live-time {
+      font-size: 11px;
+      color: #facc15;
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px dashed rgba(75,85,99,0.9);
+      font-size: 11px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .tag:hover {
+      border-color: rgba(59,130,246,0.8);
+      color: #bfdbfe;
+    }
+
+    .newsletter {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .newsletter input {
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      padding: 6px 9px;
+      background: rgba(15,23,42,0.9);
+      color: var(--text);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .newsletter input::placeholder {
+      color: var(--muted);
+    }
+
+    .newsletter button {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 10px;
+      background: linear-gradient(to right, #22c55e, #16a34a);
+      color: #022c22;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .small-note {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid rgba(31,41,55,0.9);
+      padding-top: 14px;
+      padding-bottom: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .main-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .navbar {
+        border-radius: 16px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-title {
+        font-size: 22px;
+      }
+
+      .article-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .search-input input {
+        width: 90px;
+      }
+
+      .wrapper {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="nav-left">
+        <div class="logo-circle">B</div>
+        <div class="brand-text">
+          <span>Portal Bola</span>
+          <span>Berita & analisis sepak bola harian</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#" class="active">Beranda</a>
+        <a href="#berita">Berita</a>
+        <a href="#analisis">Analisis</a>
+        <a href="#opini">Opini</a>
+        <a href="#klasemen">Klasemen</a>
+      </nav>
+      <div class="nav-right">
+        <div class="search-input">
+          <span>🔍</span>
+          <input id="searchInput" type="text" placeholder="Cari artikel...">
+        </div>
+        <button class="pill-btn" id="subscribeBtn">
+          <span class="icon">⚽</span>
+          <span>Ikuti Update</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <article class="hero-main">
+        <div>
+          <div class="badge-row">
+            <span class="badge-live">
+              <span class="dot-pulse"></span>
+              BREAKING
+            </span>
+            <span class="badge-tag">Liga Champions</span>
+            <span class="badge-tag">Tak Tik & Analisis</span>
+          </div>
+          <h1 class="hero-title">
+            Comeback dramatis menit akhir, sang juara bertahan selamat dari kekalahan.
+          </h1>
+          <div class="hero-meta">
+            <span>✍️ Redaksi Portal Bola</span>
+            <span>🕒 5 menit baca</span>
+            <span>📅 18 November 2025</span>
+          </div>
+          <p class="hero-desc">
+            Gol di masa injury time mengubah jalannya grup. Kami membedah perubahan taktik,
+            peran pemain kunci, dan apa artinya hasil ini untuk peluang lolos ke fase gugur.
+          </p>
+          <div class="hero-cta-row">
+            <button class="pill-btn">
+              <span class="icon">▶</span>
+              <span>Baca Analisis Lengkap</span>
+            </button>
+            <button class="ghost-btn">
+              <span>📊</span>
+              <span>Lihat statistik pertandingan</span>
+            </button>
+            <span class="stat-pill">🔥 12.4K dibaca hari ini</span>
+          </div>
+        </div>
+        <div class="hero-media">
+          <div class="field-overlay"></div>
+          <div class="field-line">
+            <div class="field-center-circle"></div>
+            <div class="field-ball"></div>
+
+            <div class="score-strip">
+              <div class="team-name">
+                <div class="team-badge"></div>
+                <span>Madrid</span>
+              </div>
+              <div class="score-main">3 — 3</div>
+              <div class="team-name" style="justify-content: flex-end;">
+                <span>Munich</span>
+                <div class="team-badge" style="background: radial-gradient(circle at 30% 20%, #f97316, #b91c1c);"></div>
+              </div>
+            </div>
+
+            <div class="hero-mini-meta">
+              <span>⚽ 90+3' Gol penyeimbang</span>
+              <span>🎯 21 tembakan • 8 tepat sasaran</span>
+            </div>
+
+            <div class="trend-chip-row">
+              <span class="trend-chip">🎥 Highlight pertandingan</span>
+              <span class="trend-chip">🧠 Analisis taktik babak kedua</span>
+              <span class="trend-chip">⭐ Rating pemain</span>
+              <span class="trend-chip">🗣️ Reaksi pelatih & pemain</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Sidebar quick block -->
+      <aside class="sidebar-block">
+        <h2 class="sidebar-title">
+          ⏱️ Jadwal Malam Ini
+        </h2>
+        <p class="sidebar-sub">
+          Ikuti pertandingan pilihan redaksi, lengkap dengan jam tayang dan channel resmi.
+        </p>
+        <div class="live-match">
+          <div class="live-header">
+            <span class="live-badge">
+              <span class="dot-live"></span> Live Sekarang
+            </span>
+            <span class="live-league">Premier League • Pekan 12</span>
+          </div>
+          <div class="live-team-row">
+            <div class="live-team">
+              <div class="live-team-logo"></div>
+              <div>
+                <div class="live-team-name">Arsenal</div>
+                <div class="live-league">Tuan rumah</div>
+              </div>
+            </div>
+            <div>
+              <div class="live-score">1 — 0</div>
+              <div class="live-time">62'</div>
+            </div>
+            <div class="live-team" style="justify-content: flex-end;">
+              <div>
+                <div class="live-team-name">Liverpool</div>
+                <div class="live-league">Tim tamu</div>
+              </div>
+              <div class="live-team-logo" style="background: radial-gradient(circle at 30% 20%, #ef4444, #7f1d1d);"></div>
+            </div>
+          </div>
+          <div class="hero-mini-meta" style="margin-top: 8px;">
+            <span>📺 Siaran: Official Partner</span>
+            <span>📲 Live text & statistik</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-layout">
+      <section class="section" id="berita">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Berita Terbaru</h2>
+            <p class="section-sub">Update cepat dari liga top Eropa dan dunia.</p>
+          </div>
+          <div class="filter-pills">
+            <button class="filter-pill active" data-category="semua">Semua</button>
+            <button class="filter-pill" data-category="Liga Inggris">Liga Inggris</button>
+            <button class="filter-pill" data-category="Liga Spanyol">La Liga</button>
+            <button class="filter-pill" data-category="Liga Champions">Liga Champions</button>
+          </div>
+        </div>
+
+        <div class="article-list" id="articleList">
+          <!-- Artikel 1 -->
+          <article class="article-card" data-category="Liga Champions" data-title="Comeback dramatis sang juara bertahan">
+            <div class="article-thumb">
+              <div class="article-thumb-inner"></div>
+              <span class="article-tag">Liga Champions</span>
+              <span class="article-duration">5 menit baca</span>
+            </div>
+            <div class="article-content">
+              <h3 class="article-title">
+                Comeback dramatis, juara bertahan selamat dari kekalahan di kandang.
+              </h3>
+              <p class="article-excerpt">
+                Tertinggal dua gol di babak pertama, perubahan formasi 4-3-3 ke 4-2-3-1
+                mengubah segalanya. Pergantian pemain di menit 60 jadi titik balik.
+              </p>
+              <div class="article-meta-row">
+                <div class="article-meta-left">
+                  <span>📅 18 Nov 2025</span>
+                  <span>👁️ 8.2K</span>
+                  <span class="chip">Analisis</span>
+                </div>
+                <span class="read-link">Baca selengkapnya →</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Artikel 2 -->
+          <article class="article-card" data-category="Liga Inggris" data-title="Drama VAR di laga big match Liga Inggris">
+            <div class="article-thumb" style="background: linear-gradient(135deg, #0ea5e9, #6366f1);">
+              <div class="article-thumb-inner"></div>
+              <span class="article-tag">Liga Inggris</span>
+              <span class="article-duration">4 menit baca</span>
+            </div>
+            <div class="article-content">
+              <h3 class="article-title">
+                Drama VAR di big match: tiga gol dianulir, apa kata pelatih?
+              </h3>
+              <p class="article-excerpt">
+                Laga sarat gengsi diwarnai keputusan VAR yang kontroversial. Kami merangkum
+                momen-momen krusial dan aturan yang digunakan wasit.
+              </p>
+              <div class="article-meta-row">
+                <div class="article-meta-left">
+                  <span>📅 18 Nov 2025</span>
+                  <span>👁️ 5.4K</span>
+                  <span class="chip">Berita</span>
+                </div>
+                <span class="read-link">Baca selengkapnya →</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Artikel 3 -->
+          <article class="article-card" data-category="Liga Spanyol" data-title="Wonderkid baru bersinar di Liga Spanyol">
+            <div class="article-thumb" style="background: linear-gradient(135deg, #22c55e, #facc15);">
+              <div class="article-thumb-inner"></div>
+              <span class="article-tag">Liga Spanyol</span>
+              <span class="article-duration">6 menit baca</span>
+            </div>
+            <div class="article-content">
+              <h3 class="article-title">
+                Wonderkid 18 tahun curi perhatian, cetak brace di El Clasico mini.
+              </h3>
+              <p class="article-excerpt">
+                Kecepatan, keberanian, dan ketenangan di depan gawang membuatnya jadi sorotan.
+                Apa yang membuatnya spesial di mata para pemandu bakat?
+              </p>
+              <div class="article-meta-row">
+                <div class="article-meta-left">
+                  <span>📅 17 Nov 2025</span>
+                  <span>👁️ 6.1K</span>
+                  <span class="chip">Profil Pemain</span>
+                </div>
+                <span class="read-link">Baca selengkapnya →</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Artikel 4 -->
+          <article class="article-card" data-category="Liga Inggris" data-title="Analisis taktik pressing tinggi di Premier League">
+            <div class="article-thumb" style="background: linear-gradient(135deg, #22c55e, #ec4899);">
+              <div class="article-thumb-inner"></div>
+              <span class="article-tag">Liga Inggris</span>
+              <span class="article-duration">7 menit baca</span>
+            </div>
+            <div class="article-content">
+              <h3 class="article-title">
+                Mengapa tim-tim Premier League semakin agresif dengan pressing tinggi?
+              </h3>
+              <p class="article-excerpt">
+                Data menunjukkan intensitas lari tanpa bola meningkat signifikan. Kami jelaskan
+                konsep PPDA, counter-press, dan resikonya jika salah eksekusi.
+              </p>
+              <div class="article-meta-row">
+                <div class="article-meta-left">
+                  <span>📅 16 Nov 2025</span>
+                  <span>👁️ 4.7K</span>
+                  <span class="chip">Taktik</span>
+                </div>
+                <span class="read-link">Baca selengkapnya →</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- SIDEBAR -->
+      <aside>
+        <div class="sidebar-block">
+          <h2 class="sidebar-title">Trending Hari Ini</h2>
+          <p class="sidebar-sub">Topik yang paling banyak dibaca dalam 24 jam terakhir.</p>
+          <div class="tag-cloud">
+            <span class="tag">#liga-inggris</span>
+            <span class="tag">#liga-champions</span>
+            <span class="tag">#transfer</span>
+            <span class="tag">#taktik</span>
+            <span class="tag">#timnas</span>
+            <span class="tag">#wonderkid</span>
+            <span class="tag">#derby-panas</span>
+          </div>
+        </div>
+
+        <div class="sidebar-block" id="analisis">
+          <h2 class="sidebar-title">Analisis Taktik</h2>
+          <p class="sidebar-sub">Bahas sepak bola lebih dalam, bukan cuma soal skor.</p>
+          <ul style="list-style: none; font-size: 12px; display: flex; flex-direction: column; gap: 6px;">
+            <li>• <strong>Rahasia build-up 3-2</strong> yang dipakai klub-klub top Eropa.</li>
+            <li>• Mengapa fullback modern sering masuk ke tengah?</li>
+            <li>• Cara membaca heatmap dan xG untuk pemula.</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-block" id="opini">
+          <h2 class="sidebar-title">Kolom Opini</h2>
+          <p class="sidebar-sub">Tulisan opini dari sudut pandang fans dan analis.</p>
+          <ul style="list-style: none; font-size: 12px; display: flex; flex-direction: column; gap: 6px;">
+            <li>• Apakah jadwal padat membunuh kualitas permainan?</li>
+            <li>• Sepak bola modern: data vs insting pelatih.</li>
+            <li>• Peran suporter di era sepak bola industri.</li>
+          </ul>
+        </div>
+
+        <div class="sidebar-block">
+          <h2 class="sidebar-title">📩 Newsletter Gratis</h2>
+          <p class="sidebar-sub">
+            Dapatkan rangkuman berita dan analisis pilihan langsung ke email kamu, 3x seminggu.
+          </p>
+          <form class="newsletter" onsubmit="handleSubscribe(event)">
+            <input type="email" id="emailInput" placeholder="Masukkan email kamu">
+            <button type="submit">Daftar Sekarang</button>
+            <p class="small-note">
+              Dengan mendaftar, kamu setuju menerima email dari Portal Bola. Bisa berhenti kapan saja.
+            </p>
+          </form>
+        </div>
+      </aside>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span>© <span id="yearNow"></span> Portal Bola. Dibangun dengan cinta untuk pecinta sepak bola.</span>
+      <div class="footer-links">
+        <a>Kontak</a>
+        <a>Tentang Kami</a>
+        <a>Kebijakan Privasi</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Set tahun sekarang
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    // Fitur: filter kategori
+    const filterButtons = document.querySelectorAll('.filter-pill');
+    const articleCards = document.querySelectorAll('.article-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const category = btn.getAttribute('data-category');
+
+        articleCards.forEach(card => {
+          const cardCategory = card.getAttribute('data-category');
+
+          if (category === 'semua' || category === cardCategory) {
+            card.style.display = 'grid';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Fitur: search artikel
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+
+      articleCards.forEach(card => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        const excerpt = card.querySelector('.article-excerpt').textContent.toLowerCase();
+
+        if (title.includes(query) || excerpt.includes(query)) {
+          card.style.display = 'grid';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+
+    // Fitur: tombol subscribe
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    subscribeBtn.addEventListener('click', () => {
+      alert('Terima kasih! Kamu akan mendapatkan update artikel terbaru Portal Bola.');
+    });
+
+    // Fitur: newsletter
+    function handleSubscribe(e) {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value.trim();
+      if (!email) {
+        alert('Mohon isi alamat email terlebih dahulu.');
+        return;
+      }
+      alert('Terima kasih sudah berlangganan, ' + email + '!');
+      document.getElementById('emailInput').value = '';
+    }
+  </script>
+</body>
+</html>
