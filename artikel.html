@@ -91,22 +91,26 @@
       box-shadow: 0 18px 40px rgba(15,23,42,0.9);
     }
 
-    /* "Gambar" header artikel */
     .article-hero {
       border-radius: 18px;
       overflow: hidden;
-      background: linear-gradient(135deg, #22c55e, #0ea5e9);
       position: relative;
-      height: 190px;
+      height: 210px;
       margin-bottom: 16px;
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
     }
 
-    .article-hero-inner {
+    .article-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .article-hero-overlay {
       position: absolute;
-      inset: 12px;
-      border-radius: 14px;
-      border: 1px dashed rgba(15,23,42,0.7);
-      background: radial-gradient(circle at top, rgba(15,23,42,0.3), rgba(15,23,42,0.85));
+      inset: 0;
+      background: linear-gradient(to top, rgba(15,23,42,0.9), rgba(15,23,42,0.2));
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -249,7 +253,7 @@
         font-size: 20px;
       }
       .article-hero {
-        height: 170px;
+        height: 190px;
       }
     }
   </style>
@@ -280,19 +284,6 @@
     const params = new URLSearchParams(window.location.search);
     const articleId = params.get('id');
 
-    function getHeroGradient(category) {
-      switch (category) {
-        case 'Liga Inggris':
-          return 'linear-gradient(135deg, #0ea5e9, #6366f1)';
-        case 'Liga Spanyol':
-          return 'linear-gradient(135deg, #22c55e, #facc15)';
-        case 'Liga Champions':
-          return 'linear-gradient(135deg, #22c55e, #0ea5e9)';
-        default:
-          return 'linear-gradient(135deg, #22c55e, #ec4899)';
-      }
-    }
-
     async function loadArticle() {
       const container = document.getElementById('contentArea');
 
@@ -322,15 +313,17 @@
           return;
         }
 
-        const paragraphs = (article.content || article.excerpt || '').split('\n\n');
+        const paragraphs = (article.content || article.excerpt || '').split('\\n\\n');
         const bodyHtml = paragraphs.map(p => `<p>${p}</p>`).join('');
 
-        const heroGradient = getHeroGradient(article.category || '');
+        const heroImage = article.image || '';
+        const heroAlt = article.imageAlt || article.title || 'Gambar artikel';
 
         container.innerHTML = `
           <article class="article-shell">
-            <div class="article-hero" style="background:${heroGradient};">
-              <div class="article-hero-inner">
+            <div class="article-hero">
+              ${heroImage ? `<img src="${heroImage}" alt="${heroAlt}">` : ''}
+              <div class="article-hero-overlay">
                 <div class="article-hero-top">
                   <span class="hero-tag">${article.category || 'Berita'}</span>
                   <span class="hero-pill"><span class="hero-dot"></span>PORTAL BOLA</span>
