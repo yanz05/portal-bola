@@ -996,13 +996,13 @@
             <h2 class="section-title">Berita Terbaru</h2>
             <p class="section-sub">Update cepat dari liga top Eropa dan dunia.</p>
           </div>
-          <div class="filter-pills">
-            <button class="filter-pill active" data-category="semua">Semua</button>
-            <button class="filter-pill" data-category="Liga Inggris">Liga Inggris</button>
-            <button class="filter-pill" data-category="Liga Spanyol">La Liga</button>
-            <button class="filter-pill" data-category="Liga Champions">Liga Champions</button>
-          </div>
-        </div>
+<div class="filter-pills">
+  <button class="filter-pill active" data-source="semua">Semua</button>
+  <button class="filter-pill" data-source="ESPN">ESPN</button>
+  <button class="filter-pill" data-source="Goal">Goal</button>
+  <button class="filter-pill" data-source="90mins">90mins</button>
+  <button class="filter-pill" data-source="OneFootball">OneFootball</button>
+</div>
 
         <div class="article-list" id="articleList">
           <!-- Artikel akan di-generate otomatis dari berita.json -->
@@ -1127,158 +1127,258 @@
   </div>
 
   <script>
-  // Set tahun sekarang di footer
-  const yearSpan = document.getElementById('yearNow');
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
+// ========= KONFIGURASI API =========
+const API_SOURCES = [
+  {
+    id: 'espn',
+    label: 'ESPN',
+    url: 'https://footballnewsapi.netlify.app/.netlify/functions/api/news/espn'
+  },
+  {
+    id: 'goal',
+    label: 'Goal',
+    url: 'https://footballnewsapi.netlify.app/.netlify/functions/api/news/goal'
+  },
+  {
+    id: '90mins',
+    label: '90mins',
+    url: 'https://footballnewsapi.netlify.app/.netlify/functions/api/news/90mins'
+  },
+  {
+    id: 'onefootball',
+    label: 'OneFootball',
+    url: 'https://footballnewsapi.netlify.app/.netlify/functions/api/news/onefootball'
+  }
+];
+
+// ========= STATE ===========
+
+let allArticles = [];
+let currentSource = 'semua';
+let searchQuery = '';
+
+// Set tahun sekarang di footer
+const yearSpan = document.getElementById('yearNow');
+if (yearSpan) {
+  yearSpan.textContent = new Date().getFullYear();
+}
+
+// ========= FUNGSI AMBIL DATA DARI API ===========
+
+async function fetchFromSource(source) {
+  const res = await fetch(source.url);
+  if (!res.ok) throw new Error('Gagal ambil dari ' + source.label);
+  const data = await res.json();
+
+  // Coba dukung berbagai bentuk response
+  const list =
+    Array.isArray(data)
+      ? data
+      : (data.articles || data.news || data.data || []);
+
+  return (list || []).map(item => {
+    // Normalisasi field supaya seragam
+    const title =
+      item.title || item.heading || item.headline || 'Tanpa judul';
+    const url =
+      item.url || item.link || item.newsUrl || item.href || '#';
+    const image =
+      item.image || item.img || item.thumbnail || item.image_url || '';
+    const description =
+      item.description || item.summary || item.excerpt || '';
+    const published =
+      item.publishedAt || item.pubDate || item.time || '';
+
+    return {
+      title,
+      url,
+      image,
+      description,
+      source: source.label,
+      published
+    };
+  });
+}
+
+async function loadArticles() {
+  const listEl = document.getElementById('articleList');
+  if (listEl) {
+    listEl.innerHTML =
+      '<p style="font-size:13px;color:#9ca3af;">Memuat berita terbaru...</p>';
   }
 
-  // State untuk berita
-  let allArticles = [];
-  let currentCategory = 'semua';
-  let searchQuery = '';
+  try {
+    const results = [];
+    for (const src of API_SOURCES) {
+      try {
+        const arr = await fetchFromSource(src);
+        results.push(...arr);
+      } catch (err) {
+        console.warn('Gagal ambil dari', src.label, err);
+      }
+    }
 
-  // Load berita dari berita.json
-  async function loadArticles() {
-    try {
-      const res = await fetch('berita.json?cache=' + Date.now());
-      if (!res.ok) throw new Error('Gagal mengambil data berita');
-      allArticles = await res.json();
-    } catch (err) {
-      console.error(err);
+    // Kalau tidak ada sama sekali
+    if (!results.length) {
+      if (listEl) {
+        listEl.innerHTML =
+          '<p style="font-size:13px;color:#fca5a5;">Tidak bisa memuat berita dari API. Coba reload beberapa saat lagi.</p>';
+      }
       allArticles = [];
+      return;
     }
+
+    // Sedikit sort: yang terbaru di atas (kalau ada info waktu)
+    allArticles = results;
     applyFilters();
+  } catch (err) {
+    console.error(err);
+    if (listEl) {
+      listEl.innerHTML =
+        '<p style="font-size:13px;color:#fca5a5;">Terjadi kesalahan saat memuat berita.</p>';
+    }
+  }
+}
+
+// ========= RENDER LIST BERITA ===========
+
+function applyFilters() {
+  const listEl = document.getElementById('articleList');
+  if (!listEl) return;
+
+  listEl.innerHTML = '';
+
+  if (!allArticles.length) {
+    listEl.innerHTML =
+      '<p style="font-size:13px;color:#9ca3af;">Belum ada berita.</p>';
+    return;
   }
 
-  // Terapkan filter kategori + pencarian
-  function applyFilters() {
-    const listEl = document.getElementById('articleList');
-    if (!listEl) return;
+  const filtered = allArticles.filter(a => {
+    const matchSource =
+      currentSource === 'semua' ||
+      !currentSource ||
+      a.source === currentSource;
 
-    listEl.innerHTML = '';
+    const text = ((a.title || '') + ' ' + (a.description || '')).toLowerCase();
+    const matchSearch =
+      !searchQuery || text.includes(searchQuery);
 
-    if (!allArticles.length) {
-      listEl.innerHTML =
-        '<p style="font-size:13px;color:#9ca3af;">Belum ada berita. Tambahkan data di <strong>berita.json</strong>.</p>';
-      return;
-    }
+    return matchSource && matchSearch;
+  });
 
-    const filtered = allArticles.filter(a => {
-      const matchesCategory =
-        currentCategory === 'semua' || a.category === currentCategory;
-      const text = ((a.title || '') + ' ' + (a.excerpt || '')).toLowerCase();
-      const matchesSearch =
-        !searchQuery || text.includes(searchQuery);
-      return matchesCategory && matchesSearch;
-    });
+  if (!filtered.length) {
+    listEl.innerHTML =
+      '<p style="font-size:13px;color:#9ca3af;">Berita tidak ditemukan untuk filter / pencarian ini.</p>';
+    return;
+  }
 
-    if (!filtered.length) {
-      listEl.innerHTML =
-        '<p style="font-size:13px;color:#9ca3af;">Berita tidak ditemukan untuk filter / pencarian ini.</p>';
-      return;
-    }
+  filtered.forEach(a => {
+    const card = document.createElement('article');
+    card.className = 'article-card';
 
-    filtered.forEach(a => {
-      const card = document.createElement('article');
-      card.className = 'article-card';
-      card.setAttribute('data-category', a.category || '');
-      card.setAttribute('data-title', a.title || '');
+    // Buat URL external aman
+    const safeUrl = a.url && a.url.startsWith('http')
+      ? a.url
+      : '#';
 
-      const detailUrl = 'artikel.html?id=' + encodeURIComponent(a.id);
-
-      card.innerHTML = `
-        <div class="article-thumb">
-          <div class="article-thumb-inner"></div>
-          <span class="article-tag">${a.category || ''}</span>
-          <span class="article-duration">${a.readingTime || ''}</span>
-        </div>
-        <div class="article-content">
-          <h3 class="article-title">${a.title || ''}</h3>
-          <p class="article-excerpt">
-            ${a.excerpt || ''}
-          </p>
-          <div class="article-meta-row">
-            <div class="article-meta-left">
-              <span>📅 ${a.date || ''}</span>
-              <span>👁️ ${a.views || ''}</span>
-              <span class="chip">${a.tag || ''}</span>
-            </div>
-            <a class="read-link" href="${detailUrl}">Baca selengkapnya →</a>
+    card.innerHTML = `
+      <div class="article-thumb">
+        <div class="article-thumb-inner"></div>
+        <span class="article-tag">${a.source || ''}</span>
+        <span class="article-duration">${a.published || ''}</span>
+      </div>
+      <div class="article-content">
+        <h3 class="article-title">${a.title || ''}</h3>
+        <p class="article-excerpt">
+          ${a.description || ''}
+        </p>
+        <div class="article-meta-row">
+          <div class="article-meta-left">
+            <span>📰 ${a.source || ''}</span>
           </div>
+          <a class="read-link" href="${safeUrl}" target="_blank" rel="noopener">
+            Baca selengkapnya →
+          </a>
         </div>
-      `;
+      </div>
+    `;
 
-      // 👉 Set gambar thumbnail jika ada
-      const thumb = card.querySelector('.article-thumb');
-      if (thumb && a.image) {
-        thumb.style.backgroundImage = `url('${a.image}')`;
-        thumb.style.backgroundSize = 'cover';
-        thumb.style.backgroundPosition = 'center';
-      }
-
-      listEl.appendChild(card);
-    });
-  }
-
-  // Tombol filter kategori
-  document.querySelectorAll('.filter-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentCategory = btn.getAttribute('data-category') || 'semua';
-      applyFilters();
-    });
-  });
-
-  // Pencarian
-  const searchInputEl = document.getElementById('searchInput');
-  if (searchInputEl) {
-    searchQuery = '';
-    searchInputEl.addEventListener('input', () => {
-      searchQuery = searchInputEl.value.toLowerCase();
-      applyFilters();
-    });
-  }
-
-  // Tombol subscribe di navbar
-  const subscribeBtn = document.getElementById('subscribeBtn');
-  if (subscribeBtn) {
-    subscribeBtn.addEventListener('click', () => {
-      alert('Terima kasih! Kamu akan mendapatkan update artikel terbaru Portal Bola.');
-    });
-  }
-
-  // Newsletter form
-  function handleSubscribe(e) {
-    e.preventDefault();
-    const emailInput = document.getElementById('emailInput');
-    const email = (emailInput?.value || '').trim();
-    if (!email) {
-      alert('Mohon isi alamat email terlebih dahulu.');
-      return;
+    // Set gambar kalau ada
+    const thumb = card.querySelector('.article-thumb');
+    if (thumb && a.image) {
+      thumb.style.backgroundImage = `url('${a.image}')`;
+      thumb.style.backgroundSize = 'cover';
+      thumb.style.backgroundPosition = 'center';
     }
-    alert('Terima kasih sudah berlangganan, ' + email + '!');
-    emailInput.value = '';
-  }
 
-  // Smooth scroll untuk menu navbar (link yang pakai #)
-  document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const targetId = link.getAttribute('href');
-      if (!targetId || targetId === '#') return;
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
+    listEl.appendChild(card);
   });
+}
 
-  // Jalankan saat halaman dibuka
-  loadArticles();
+// ========= FILTER BUTTONS ===========
+
+document.querySelectorAll('.filter-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSource = btn.getAttribute('data-source') || 'semua';
+    applyFilters();
+  });
+});
+
+// ========= SEARCH ===========
+
+const searchInputEl = document.getElementById('searchInput');
+if (searchInputEl) {
+  searchInputEl.addEventListener('input', () => {
+    searchQuery = searchInputEl.value.toLowerCase();
+    applyFilters();
+  });
+}
+
+// ========= SUBSCRIBE BTN NAVBAR ===========
+
+const subscribeBtn = document.getElementById('subscribeBtn');
+if (subscribeBtn) {
+  subscribeBtn.addEventListener('click', () => {
+    alert('Terima kasih! Kamu akan mendapatkan update artikel terbaru Portal Bola (simulasi).');
+  });
+}
+
+// ========= NEWSLETTER FORM ===========
+
+function handleSubscribe(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('emailInput');
+  const email = (emailInput?.value || '').trim();
+  if (!email) {
+    alert('Mohon isi alamat email terlebih dahulu.');
+    return;
+  }
+  alert('Terima kasih sudah berlangganan, ' + email + '!');
+  emailInput.value = '';
+}
+
+// ========= SMOOTH SCROLL NAVBAR ===========
+
+document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const targetId = link.getAttribute('href');
+    if (!targetId || targetId === '#') return;
+    const targetEl = document.querySelector(targetId);
+    if (targetEl) {
+      e.preventDefault();
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ========= JALANKAN SAAT HALAMAN DIBUKA ===========
+loadArticles();
 </script>
 </body>
 </html>
+
 
 
