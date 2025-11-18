@@ -1286,12 +1286,46 @@
       }
     });
   });
+  // Hero buttons: scroll ke bagian tertentu
+  const heroReadBtn = document.getElementById('heroReadBtn');
+  if (heroReadBtn) {
+    heroReadBtn.addEventListener('click', () => {
+      const beritaSection = document.getElementById('berita');
+      if (beritaSection) {
+        beritaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
 
+  const heroStatsBtn = document.getElementById('heroStatsBtn');
+  if (heroStatsBtn) {
+    heroStatsBtn.addEventListener('click', () => {
+      const klasemenSection = document.getElementById('klasemen');
+      if (klasemenSection) {
+        klasemenSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+
+  // Tag cloud: klik = cari / filter
+  document.querySelectorAll('.tag-cloud .tag').forEach(tagEl => {
+    tagEl.addEventListener('click', () => {
+      const text = tagEl.textContent || '';
+      const cleaned = text.replace('#', '').trim();
+      const searchInputEl = document.getElementById('searchInput');
+      if (searchInputEl) {
+        searchInputEl.value = cleaned;
+        searchQuery = cleaned.toLowerCase();
+        applyFilters();
+      }
+    });
+  });
   // Jalankan saat halaman dibuka
   loadArticles();
 </script>
 </body>
 </html>
+
 
 
 
