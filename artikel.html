@@ -100,13 +100,6 @@
       background: linear-gradient(135deg, #22c55e, #0ea5e9);
     }
 
-    .article-hero img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
     .article-hero-overlay {
       position: absolute;
       inset: 0;
@@ -284,6 +277,19 @@
     const params = new URLSearchParams(window.location.search);
     const articleId = params.get('id');
 
+    function getHeroGradient(category) {
+      switch (category) {
+        case 'Liga Inggris':
+          return 'linear-gradient(135deg, #0ea5e9, #6366f1)';
+        case 'Liga Spanyol':
+          return 'linear-gradient(135deg, #22c55e, #facc15)';
+        case 'Liga Champions':
+          return 'linear-gradient(135deg, #22c55e, #0ea5e9)';
+        default:
+          return 'linear-gradient(135deg, #ec4899, #8b5cf6)';
+      }
+    }
+
     async function loadArticle() {
       const container = document.getElementById('contentArea');
 
@@ -313,16 +319,14 @@
           return;
         }
 
-        const paragraphs = (article.content || article.excerpt || '').split('\\n\\n');
+        const paragraphs = (article.content || article.excerpt || '').split('\n\n');
         const bodyHtml = paragraphs.map(p => `<p>${p}</p>`).join('');
 
-        const heroImage = article.image || '';
-        const heroAlt = article.imageAlt || article.title || 'Gambar artikel';
+        const grad = getHeroGradient(article.category || '');
 
         container.innerHTML = `
           <article class="article-shell">
-            <div class="article-hero">
-              ${heroImage ? `<img src="${heroImage}" alt="${heroAlt}">` : ''}
+            <div class="article-hero" style="background:${grad};">
               <div class="article-hero-overlay">
                 <div class="article-hero-top">
                   <span class="hero-tag">${article.category || 'Berita'}</span>
